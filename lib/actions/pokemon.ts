@@ -21,7 +21,7 @@ export const fetchPokemonList = createAsyncThunk('pokemon/fetchPokemonList', asy
   try {
     const pokemonList = await fetchPokemonListAPI(); // Call the API function
 
-    // Fetch details for each Pokemon
+
     const pokemonDetailsPromises = pokemonList.map((pokemon: { url: string; }) => fetchPokemonDetailsAPI(pokemon.url));
     const pokemonDetails = await Promise.all(pokemonDetailsPromises);
 

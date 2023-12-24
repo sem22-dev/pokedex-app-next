@@ -1,6 +1,4 @@
 
-
-// TypeFilter.tsx
 import { useState } from "react";
 
 const pokemonTypes = [
