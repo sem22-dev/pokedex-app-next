@@ -29,14 +29,14 @@ useEffect(() => {
   }, []); 
   return (
     <div 
-        className="fixed px-4 inset-0 h-screen w-full flex items-center justify-center z-50"  
+        className="fixed inset-0 px-4 top-0 h-screen w-full flex items-center justify-center z-50"  
     >
       <div className="fixed inset-0 bg-black bg-opacity-60">
-        <X className="md:hidden text-white absolute top-8 right-1/2"/>
+        <X className="md:hidden text-white absolute top-24 right-1/2"/>
       </div>
       <div
          
-           className="border-black rounded-xl  flex flex-col gap-12 justify-around  shadow-lg p-4 md:p-12 text-white z-0"
+           className=" rounded-xl flex flex-col gap-12 justify-around shadow-lg p-4 md:p-12 text-white z-50"
            style={{
              backgroundColor: backgroundColor,
              backgroundImage: "url('/logo.png')",
@@ -58,14 +58,14 @@ useEffect(() => {
               </div>
             </div>
             
-            <div className=' relative flex flex-col md:flex-row items-center gap-12 md:gap-32 justify-between'>
+            <div className=' relative flex flex-col md:flex-row items-center sm:gap-12 md:gap-32 justify-between'>
       
             <div className="flex flex-col">
                 {pokemon.stats.map((stat: any, index: number) => (
                     <div key={index} className="mb-2">
                     <div className="flex items-center">
-                        <div className=" text-right text-lg w-[340px]"> {stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}</div>
-                        <div className="w-1/4 px-8 text-left">{stat.base_stat}</div>
+                        <div className=" text-right md:text-lg w-[280px] md:w-[340px]"> {stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}</div>
+                        <div className="w-1/4 px-4 sm:px-8 text-left">{stat.base_stat}</div>
                         <div className="w-full">
                             <div>
                                 <span id={`ProgressLabel${index}`} className="sr-only">
