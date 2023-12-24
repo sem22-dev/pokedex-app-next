@@ -2,8 +2,8 @@
 import { createAsyncThunk, createAction, createSlice } from '@reduxjs/toolkit';
 
 
-const fetchPokemonListAPI = async () => {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=400');
+const fetchPokemonListAPI = async (limit: number) => {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
   const data = await res.json();
   return data.results;
 };
@@ -15,24 +15,24 @@ const fetchPokemonDetailsAPI = async (url: string) => {
   return data;
 };
 
+export const fetchPokemonList = createAsyncThunk(
+  'pokemon/fetchPokemonList',
+  async (limit: number, { dispatch, getState }) => {
+    try {
+      const pokemonList = await fetchPokemonListAPI(limit);
 
+      const pokemonDetailsPromises = pokemonList.map((pokemon: { url: string }) =>
+        fetchPokemonDetailsAPI(pokemon.url)
+      );
+      const pokemonDetails = await Promise.all(pokemonDetailsPromises);
 
-export const fetchPokemonList = createAsyncThunk('pokemon/fetchPokemonList', async (_, { dispatch, getState }) => {
-  try {
-    const pokemonList = await fetchPokemonListAPI(); // Call the API function
-
-    // Fetch details for each Pokemon
-    const pokemonDetailsPromises = pokemonList.map((pokemon: { url: string; }) => fetchPokemonDetailsAPI(pokemon.url));
-    const pokemonDetails = await Promise.all(pokemonDetailsPromises);
-
-    dispatch(setPokemonList({ list: pokemonList, details: pokemonDetails }));
-
-  } catch (error) {
-    console.error('Error fetching Pokemon list:', error);
-    throw error; 
+      dispatch(setPokemonList({ list: pokemonList, details: pokemonDetails }));
+    } catch (error) {
+      console.error('Error fetching Pokemon list:', error);
+      throw error;
+    }
   }
-}) as any;
-
+) as any;
 
 
 export const setPokemonList = createAction<{ list: any[]; details: any[] }>('pokemon/setPokemonList');

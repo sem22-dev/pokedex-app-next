@@ -19,11 +19,26 @@ interface RootState {
 }
 
 export default function Home() {
+ 
+
+  const [limit, setLimit] = useState<number>(200); // Initial limit
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+
   const dispatch = useDispatch();
   const { list, details } = useSelector((state: RootState) => state.pokemon.pokemonList);
 
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 10 && !loadingMore) {
+      // User has scrolled to the bottom, load more Pokemon
+      setLoadingMore(true);
+      setLimit((prevLimit) => prevLimit + 200); // Increase the limit by 200
+      dispatch(fetchPokemonList(limit)); // Fetch more Pokemon
+    }
+  };
 
   console.log('Pokemons', details)
   console.log('showtypes', typeFilter)
@@ -31,14 +46,22 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(fetchPokemonList());
+        await dispatch(fetchPokemonList(limit));
       } catch (error) {
         console.error('Error fetching Pokemon list:', error);
       }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, limit]);
+
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
 
   if (!list || !details) {
     return(
