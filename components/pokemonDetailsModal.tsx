@@ -21,7 +21,6 @@ const PokemonDetailsModal: React.FC<PokemonDetailsModalProps> = ({ pokemon, togg
 useEffect(() => {
    
     document.body.style.overflow = 'hidden';
-
   
     return () => {
       document.body.style.overflow = 'auto';
