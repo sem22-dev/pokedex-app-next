@@ -20,7 +20,7 @@ interface RootState {
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { list, details } = useSelector((state: RootState) => state.pokemon.pokemonList);
+  const { details } = useSelector((state: RootState) => state.pokemon.pokemonList);
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -40,7 +40,7 @@ export default function Home() {
     fetchData();
   }, [dispatch]);
 
-  if (!list || !details) {
+  if ( !details) {
     return(
     <div className='w-screen h-screen flex justify-center items-center'>
       <div className="loader"></div>
